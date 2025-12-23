@@ -2,16 +2,22 @@
   "schemaVersion": 1,
   "id": "latency-viewer",
   "version": "${version}",
-  "name": "Latency Viewer",
+  "name": "Fabric Latency Viewer",
   "description": "Displays ping numbers in the player list instead of signal bars",
-  "authors": ["You"],
+  "authors": [
+    "whes1015"
+  ],
   "contact": {},
-  "license": "MIT",
+  "license": "AGPL-3.0",
   "environment": "client",
   "entrypoints": {
-    "client": ["com.latencyviewer.LatencyViewerMod"]
+    "client": [
+      "com.latencyviewer.LatencyViewerMod"
+    ]
   },
-  "mixins": ["latency-viewer.mixins.json"],
+  "mixins": [
+    "latency-viewer.mixins.json"
+  ],
   "depends": {
     "fabricloader": ">=0.15.0",
     "minecraft": "~1.21.11",
