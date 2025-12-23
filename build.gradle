@@ -1,0 +1,93 @@
+plugins {
+    id 'fabric-loom' version '1.9-SNAPSHOT' apply false
+    id 'maven-publish'
+}
+
+allprojects {
+    group = rootProject.maven_group
+    version = rootProject.mod_version
+}
+
+subprojects {
+    apply plugin: 'fabric-loom'
+    apply plugin: 'maven-publish'
+
+    base {
+        // Format: fabric-latency-viewer-v1.0.0-mc1.21.4.jar
+        archivesName = "${rootProject.archives_base_name}-v${rootProject.mod_version}-mc${project.minecraft_version}"
+    }
+
+    // Disable version suffix in jar name (we include it in archivesName)
+    tasks.withType(Jar).configureEach {
+        archiveVersion.set('')
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        minecraft "com.mojang:minecraft:${project.minecraft_version}"
+        mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+        modImplementation "net.fabricmc:fabric-loader:${rootProject.loader_version}"
+    }
+
+    // Include common source
+    sourceSets {
+        main {
+            java {
+                srcDir "${rootProject.projectDir}/common/src/main/java"
+            }
+            resources {
+                srcDir "${rootProject.projectDir}/common/src/main/resources"
+            }
+        }
+    }
+
+    processResources {
+        inputs.property "version", rootProject.version
+        filteringCharset "UTF-8"
+
+        filesMatching("fabric.mod.json") {
+            expand "version": rootProject.version
+        }
+    }
+
+    def javaVersion = Integer.parseInt(project.java_version)
+
+    tasks.withType(JavaCompile).configureEach {
+        it.options.encoding = "UTF-8"
+        it.options.release.set(javaVersion)
+    }
+
+    java {
+        def jv = JavaVersion.toVersion(javaVersion)
+        if (JavaVersion.current() < jv) {
+            toolchain.languageVersion = JavaLanguageVersion.of(javaVersion)
+        }
+        withSourcesJar()
+    }
+
+    jar {
+        from("${rootProject.projectDir}/LICENSE") {
+            rename { "${it}_${rootProject.archives_base_name}" }
+        }
+    }
+
+    publishing {
+        publications {
+            create("mavenJava", MavenPublication) {
+                artifactId = "${rootProject.archives_base_name}-${project.name}"
+                from components.java
+            }
+        }
+    }
+}
+
+// Task to build all versions
+tasks.register('buildAll') {
+    dependsOn subprojects.collect { it.tasks.named('build') }
+    doLast {
+        println "All versions built successfully!"
+    }
+}
