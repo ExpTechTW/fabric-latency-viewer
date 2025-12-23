@@ -42,6 +42,8 @@ jobs:
         run: |
           mkdir -p release
           find versions -name "*.jar" -path "*/build/libs/*" ! -name "*-sources.jar" -exec cp {} release/ \;
+          echo "Release files:"
+          ls -la release/
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
