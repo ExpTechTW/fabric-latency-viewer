@@ -11,10 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       versions: ${{ steps.versions.outputs.list }}
+      mod_version: ${{ steps.mod_version.outputs.version }}
     steps:
       - uses: actions/checkout@v4
       - id: versions
-        run: echo "list=$(ls -d versions/*/ | xargs -n1 basename | jq -R -s -c 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
+        run: echo "list=$(ls -d versions/*/ | xargs -n1 basename | sort -V | jq -R -s -c 'split("\n")[:-1]')" >> $GITHUB_OUTPUT
+      - id: mod_version
+        run: echo "version=$(grep 'mod_version=' gradle.properties | cut -d'=' -f2)" >> $GITHUB_OUTPUT
 
   build:
     runs-on: ubuntu-latest
@@ -57,5 +60,5 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: mc${{ matrix.version }}
+          name: v${{ needs.get-versions.outputs.mod_version }}-mc${{ matrix.version }}
           path: ${{ matrix.version }}/build/libs/*.jar
