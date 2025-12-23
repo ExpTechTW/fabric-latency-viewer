@@ -8,7 +8,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class PingStatistics {
-    private static final int HISTORY_DURATION_MS = 60_000; // 60 seconds
+    private static final int HISTORY_DURATION_MS = 60_000;
     private static final Map<UUID, PingHistory> playerPingHistories = new ConcurrentHashMap<>();
 
     private PingStatistics() {
@@ -57,14 +57,12 @@ public class PingStatistics {
             long now = System.currentTimeMillis();
             entries.add(new PingEntry(now, ping));
 
-            // Remove old entries
             entries.removeIf(e -> now - e.timestamp > HISTORY_DURATION_MS);
         }
 
         public synchronized Stats calculateStats() {
             long now = System.currentTimeMillis();
 
-            // Filter to only recent entries
             List<Integer> recentPings = new ArrayList<>();
             for (PingEntry entry : entries) {
                 if (now - entry.timestamp <= HISTORY_DURATION_MS) {
@@ -76,14 +74,12 @@ public class PingStatistics {
                 return new Stats(-1, -1, -1);
             }
 
-            // Calculate average
             int sum = 0;
             for (int ping : recentPings) {
                 sum += ping;
             }
             int average = sum / recentPings.size();
 
-            // Sort for percentiles
             Collections.sort(recentPings);
             int p50 = getPercentile(recentPings, 50);
             int p99 = getPercentile(recentPings, 99);

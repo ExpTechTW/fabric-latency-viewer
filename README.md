@@ -1,16 +1,32 @@
 # Fabric Latency Viewer
 
-A client-side Fabric mod that displays ping numbers in the player list (Tab menu) instead of signal bars.
+A client-side Fabric mod that displays detailed ping statistics in the player list (Tab menu).
 
 ## Features
 
-- Shows actual ping values (ms) instead of signal bars
-- Color-coded based on latency:
+- Shows 4 ping metrics per player:
+  - **Current** - Latest ping value (color-coded)
+  - **Average** - 60-second average (blue)
+  - **P50** - 50th percentile / median (orange)
+  - **P99** - 99th percentile (red)
+
+- Color-coded current ping:
   - Green: < 50ms
   - Yellow-Green: 50-100ms
   - Yellow: 100-150ms
   - Orange: 150-300ms
   - Red: > 300ms
+
+## Screenshot
+
+```
+Player Name          45   52   48   120
+                     ^    ^    ^    ^
+                     |    |    |    P99
+                     |    |    P50
+                     |    Avg
+                     Current
+```
 
 ## Supported Versions
 
@@ -36,7 +52,14 @@ A client-side Fabric mod that displays ping numbers in the player list (Tab menu
 ## Requirements
 
 - Java 21 (for building)
-- Fabric Loader 0.15.0+
+- Fabric Loader 0.16.0+
+
+## Installation
+
+1. Install [Fabric Loader](https://fabricmc.net/use/)
+2. Download the JAR file for your Minecraft version from [Releases](https://github.com/user/fabric-latency-viewer/releases)
+3. Place the JAR in your `.minecraft/mods` folder
+4. Launch the game
 
 ## Build
 
@@ -45,9 +68,9 @@ A client-side Fabric mod that displays ping numbers in the player list (Tab menu
 ./gradlew buildAll
 
 # Build specific version
-./gradlew :1.20.1:build
-./gradlew :1.21.4:build
 ./gradlew :1.21.11:build
+./gradlew :1.21.4:build
+./gradlew :1.20.1:build
 
 # Clean build files
 ./gradlew clean
@@ -65,13 +88,6 @@ Example:
 ```
 versions/1.21.11/build/libs/fabric-latency-viewer-v1.0.0-mc1.21.11.jar
 ```
-
-## Installation
-
-1. Install [Fabric Loader](https://fabricmc.net/use/)
-2. Download the JAR file for your Minecraft version
-3. Place the JAR in your `.minecraft/mods` folder
-4. Launch the game
 
 ## License
 

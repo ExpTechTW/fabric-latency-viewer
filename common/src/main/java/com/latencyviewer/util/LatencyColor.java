@@ -1,22 +1,19 @@
 package com.latencyviewer.util;
 
 public class LatencyColor {
-    // 預設顏色閾值
     private static final int THRESHOLD_EXCELLENT = 50;
     private static final int THRESHOLD_GOOD = 100;
     private static final int THRESHOLD_FAIR = 150;
     private static final int THRESHOLD_POOR = 300;
 
-    // 顏色值 (ARGB)
-    private static final int COLOR_UNKNOWN = 0xFF555555;  // Gray
-    private static final int COLOR_EXCELLENT = 0xFF00FF00; // Green
-    private static final int COLOR_GOOD = 0xFF99FF00;      // Yellow-Green
-    private static final int COLOR_FAIR = 0xFFFFFF00;      // Yellow
-    private static final int COLOR_POOR = 0xFFFF9900;      // Orange
-    private static final int COLOR_BAD = 0xFFFF0000;       // Red
+    private static final int COLOR_UNKNOWN = 0xFF555555;
+    private static final int COLOR_EXCELLENT = 0xFF00FF00;
+    private static final int COLOR_GOOD = 0xFF99FF00;
+    private static final int COLOR_FAIR = 0xFFFFFF00;
+    private static final int COLOR_POOR = 0xFFFF9900;
+    private static final int COLOR_BAD = 0xFFFF0000;
 
     private LatencyColor() {
-        // Private constructor to prevent instantiation
     }
 
     public static int getColor(int latency) {
