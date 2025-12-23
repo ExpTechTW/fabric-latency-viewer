@@ -1,15 +1,32 @@
 package com.latencyviewer;
 
+import com.latencyviewer.util.ModLogger;
 import net.fabricmc.api.ClientModInitializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.fabricmc.loader.api.FabricLoader;
 
 public class LatencyViewerMod implements ClientModInitializer {
     public static final String MOD_ID = "latency-viewer";
-    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+    public static final String MOD_NAME = "Fabric Latency Viewer";
+
+    private static LatencyViewerMod instance;
+
+    public LatencyViewerMod() {
+        instance = this;
+    }
 
     @Override
     public void onInitializeClient() {
-        LOGGER.info("Latency Viewer mod initialized!");
+        ModLogger.getInstance().info("Mod initialized! (v{})", getVersion());
+    }
+
+    public static LatencyViewerMod getInstance() {
+        return instance;
+    }
+
+    public static String getVersion() {
+        return FabricLoader.getInstance()
+                .getModContainer(MOD_ID)
+                .map(container -> container.getMetadata().getVersion().getFriendlyString())
+                .orElse("unknown");
     }
 }

@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.9-SNAPSHOT' apply false
+    id 'fabric-loom' version '1.14-SNAPSHOT' apply false
     id 'maven-publish'
 }
 
@@ -19,6 +19,15 @@ subprojects {
 
     // Disable version suffix in jar name (we include it in archivesName)
     tasks.withType(Jar).configureEach {
+        archiveVersion.set('')
+    }
+
+    // Also set for remapJar task
+    tasks.named('remapJar') {
+        archiveVersion.set('')
+    }
+
+    tasks.named('remapSourcesJar') {
         archiveVersion.set('')
     }
 
